@@ -34,13 +34,14 @@ class AddEditTodoViewModel @Inject constructor(
     val uiEvent = _uiEvent.receiveAsFlow()
 
     init {
-        val todoId = savedStateHandle.get<Int>("todoId")
+        val todoId = savedStateHandle.get<Int>("todoId")!!
         if (todoId != -1) {
             viewModelScope.launch {
-                todo = repository.getTodoById(todo.id)
-                title = todo.title
-                description = todo.description ?: ""
-                this@AddEditTodoViewModel.todo = todo
+                repository.getTodoById(todoId)?.let { todo ->
+                    title = todo.title
+                    description = todo.description ?: ""
+                    this@AddEditTodoViewModel.todo = todo
+                }
             }
         }
     }
@@ -55,7 +56,7 @@ class AddEditTodoViewModel @Inject constructor(
             }
             is AddEditTodoEvent.OnSaveTodoClick -> {
                 viewModelScope.launch {
-                    if (title.isNotBlank()) {
+                    if (title.isBlank()) {
                         sendUiEvent(
                             UiEvent.ShowSnackbar(
                                 message = "The title can't be empty"
