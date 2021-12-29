@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -80,5 +81,5 @@ dependencies {
     kapt "androidx.room:room-compiler:2.3.0"
 
     // kotlin extensions and coroutines support for room
-    implementation "androidx.room:room-ktx:2.3.0"
+    implementation "androidx.room:room-ktx:2.3.0 "
 }
